@@ -9,7 +9,9 @@ class StatusUpdateController < ApplicationController
     result = StatusUpdate.where(id: params[:id])
     
     if result.any?
-      content = StatusUpdate.where(id: params[:id]).take
+      status = result.take
+      content = { :comments => status.get_comments }
+      content.merge!(status.attributes)
     else
       content = {}
     end
