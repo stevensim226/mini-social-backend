@@ -25,6 +25,13 @@ module Minisocial
       g.orm :active_record, primary_key_type: :uuid
     end
 
+    config.middleware.insert_before 0, Rack::Cors do
+      allow do
+        origins '*'
+        resource '*', headers: :any, methods: :any
+      end
+    end
+
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 6.1
 
