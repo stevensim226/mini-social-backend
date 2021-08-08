@@ -73,6 +73,6 @@ test:
 #
 production:
   <<: *default
-  database: minisocial_production
+  database: minisocial
   username: minisocial
   password: <%= ENV['MINISOCIAL_DATABASE_PASSWORD'] %>
