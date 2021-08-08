@@ -41,7 +41,6 @@ class StatusUpdateController < ApplicationController
   end
 
   def update
-    params.required(:status_update).permit(:name, :content, :pfp_url)
     to_be_updated = StatusUpdate.find_by_id(params[:id])
 
     if to_be_updated != nil

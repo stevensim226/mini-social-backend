@@ -1,7 +1,6 @@
 Rails.application.routes.draw do
   
   # Status Updates
-  get 'comment/read_specific'
   get 'status', to: "status_update#read"
   get 'status/:id', to: "status_update#read_specific"
   post 'status', to: "status_update#create"
