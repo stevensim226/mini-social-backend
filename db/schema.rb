@@ -19,7 +19,7 @@ ActiveRecord::Schema.define(version: 2021_08_08_080057) do
 
   create_table "comments", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "content"
-    t.bigint "status_update_id"
+    t.uuid "status_update_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["status_update_id"], name: "index_comments_on_status_update_id"
