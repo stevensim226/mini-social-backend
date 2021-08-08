@@ -16,7 +16,7 @@ class StatusUpdateController < ApplicationController
       content = {}
     end
 
-    render json: build_response(content, result.any?)
+    render json: JsonResponse.build_response(content, result.any?)
 
   end
 
@@ -27,7 +27,7 @@ class StatusUpdateController < ApplicationController
       new_status.save
     end
     
-    render json: build_response(new_status, new_status.valid?)
+    render json: JsonResponse.build_response(new_status, new_status.valid?)
   end
 
   def delete
@@ -47,9 +47,9 @@ class StatusUpdateController < ApplicationController
       to_be_updated.name = params[:name]
       to_be_updated.content = params[:content]
       to_be_updated.pfp_url = params.key?(:pfp_url) ? params[:pfp_url] : to_be_updated.pfp_url
-      render json: build_response(to_be_updated, to_be_updated.save) and return
+      render json: JsonResponse.build_response(to_be_updated, to_be_updated.save) and return
     end
 
-    render json: build_response(to_be_updated, false)
+    render json: JsonResponse.build_response(to_be_updated, false)
   end
 end
