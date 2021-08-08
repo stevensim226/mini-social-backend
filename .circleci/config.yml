@@ -24,8 +24,10 @@ jobs:
           name: Install dependencies
           command: bundler install
       - run:
-          name: Migrate DB
-          command: rake db:migrate
+          name: Setup and migrate DB
+          command: |
+            rake db:create
+            rake db:migrate
       - run:
           name: Run tests
           command: rspec --format documentation
