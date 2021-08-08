@@ -11,7 +11,7 @@ class StatusUpdateController < ApplicationController
     if result.any?
       status = result.take
       content = { :comments => status.get_comments }
-      content.merge!(status.attributes)
+      content.merge!(status.as_json)
     else
       content = {}
     end
