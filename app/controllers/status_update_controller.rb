@@ -27,4 +27,14 @@ class StatusUpdateController < ApplicationController
     
     render json: build_response(new_status, new_status.valid?)
   end
+
+  def delete
+    to_be_deleted = StatusUpdate.find_by_id(params[:id])
+
+    if to_be_deleted != nil
+      to_be_deleted.destroy
+    end
+
+    render :text => ""
+  end
 end
