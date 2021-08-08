@@ -37,4 +37,18 @@ class StatusUpdateController < ApplicationController
 
     render :text => ""
   end
+
+  def update
+    params.required(:status_update).permit(:name, :content, :pfp_url)
+    to_be_updated = StatusUpdate.find_by_id(params[:id])
+
+    if to_be_updated != nil
+      to_be_updated.name = params[:name]
+      to_be_updated.content = params[:content]
+      to_be_updated.pfp_url = params.key?(:pfp_url) ? params[:pfp_url] : to_be_updated.pfp_url
+      render json: build_response(to_be_updated, to_be_updated.save) and return
+    end
+
+    render json: build_response(to_be_updated, false)
+  end
 end
