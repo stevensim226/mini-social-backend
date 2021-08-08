@@ -4,6 +4,10 @@ executors:
   ruby:
     docker:
       - image: ruby:3.0.0
+      - image: postgres:latest
+        environment:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
 
 workflows:
   run-tests:
@@ -19,6 +23,11 @@ jobs:
       - run: 
           name: Install dependencies
           command: bundler install
+      - run:
+          name: Setup and migrate DB
+          command: |
+            rake db:create
+            rake db:migrate
       - run:
           name: Run tests
           command: rspec --format documentation
