@@ -8,7 +8,7 @@ class CommentController < ApplicationController
       status_pointed.comment.create(content: params[:content])
     end
 
-    render json: build_response({:content => params[:content]}, status_pointed != nil)
+    render json: JsonResponse.build_response({:content => params[:content]}, status_pointed != nil)
   end
 
   def delete

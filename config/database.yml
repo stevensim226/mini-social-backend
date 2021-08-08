@@ -71,5 +71,6 @@ test:
 production:
   <<: *default
   database: minisocial
-  username: minisocial
+  username: postgres
   password: <%= ENV['MINISOCIAL_DATABASE_PASSWORD'] %>
+
