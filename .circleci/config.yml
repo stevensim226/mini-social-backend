@@ -21,9 +21,9 @@ workflows:
           name: deploy-aws
           requires:
             - ruby-unit-tests
-          filters:
-            branches:
-              only: master
+          # filters:
+          #   branches:
+          #     only: master
 
 jobs:
   test-ruby:
