@@ -15,8 +15,8 @@ executors:
 workflows:
   run-tests:
     jobs:
-      - test-ruby:
-          name: ruby-unit-tests
+      # - test-ruby:
+      #     name: ruby-unit-tests
       - deploy-ruby:
           name: deploy-aws
           requires:
