@@ -57,8 +57,15 @@ jobs:
       - run:
           name: Run shell script
           command: |
+            apk add openssh-client
             pwd
             ls
-            echo $SSH_KEY > ~/.ssh/.id_rsa
-            ssh -i ~/.ssh/.id_rsa ubuntu@$EC2_IP < .circleci/deploy_ec2.sh
+            echo $SSH_KEY > ~/.ssh/line_key
+            LF=$'\\\x0A'
+            cat id_rsa.line \
+              | sed -e "s/-----BEGIN RSA PRIVATE KEY-----/&${LF}/" -e "s/-----END RSA PRIVATE KEY-----/${LF}&${LF}/" \
+              | fold -w 64 > .priv_key
+
+            chmod 400 ~/.ssh/.priv_key
+            ssh -i ~/.ssh/.priv_key ubuntu@$EC2_IP < .circleci/deploy_ec2.sh
       
