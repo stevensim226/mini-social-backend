@@ -9,4 +9,4 @@ ADD . .
 
 RUN bundle install
 
-CMD ["bash", "run_prod.sh"]
+CMD ["bash", "run_prod.sh", "&&", "rails", "server", "-d", "-e", "production"]
