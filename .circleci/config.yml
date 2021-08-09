@@ -15,12 +15,12 @@ executors:
 workflows:
   run-tests:
     jobs:
-      - deploy-ruby:
-          name: deploy-aws
-          requires:
-            - ruby-unit-tests
       # - test-ruby:
       #     name: ruby-unit-tests
+      - deploy-ruby:
+          name: deploy-aws
+          # requires:
+          #   - ruby-unit-tests
           # filters:
           #   branches:
           #     only: master
