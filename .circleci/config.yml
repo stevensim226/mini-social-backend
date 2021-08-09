@@ -67,5 +67,6 @@ jobs:
               | fold -w 64 > ~/.ssh/.priv_key
 
             chmod 400 ~/.ssh/.priv_key
-            ssh -i ~/.ssh/.priv_key ubuntu@$EC2_IP < .circleci/deploy_ec2.sh
+            ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no \
+              -i ~/.ssh/.priv_key ubuntu@$EC2_IP < .circleci/deploy_ec2.sh
       
