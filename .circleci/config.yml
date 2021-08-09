@@ -8,12 +8,22 @@ executors:
         environment:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
+  docker-in-docker:
+    docker:
+      - image: docker:18.06.1-ce
 
 workflows:
   run-tests:
     jobs:
       - test-ruby:
           name: ruby-unit-tests
+      - deploy-ruby:
+          name: deploy-aws
+          requires:
+            - ruby-unit-tests
+          filters:
+            branches:
+              only: master
 
 jobs:
   test-ruby:
@@ -31,3 +41,31 @@ jobs:
       - run:
           name: Run tests
           command: rspec --format documentation
+
+  deploy-ruby:
+    executor: docker-in-docker
+    steps:
+      - checkout
+      - setup_remote_docker:
+          docker_layer_caching: false
+      - run:
+          name: Build docker image
+          command: |
+            docker build . -t stevensim226/minisocial-be
+            echo $DOCKER_TOKEN | docker login -u $DOCKER_USERNAME --password-stdin
+            docker push stevensim226/minisocial-be:latest
+      - run:
+          name: Run shell script
+          command: |
+            apk add openssh-client
+            echo $SSH_KEY > ~/.ssh/line_key
+
+            LF=$'\\\x0A'
+            cat ~/.ssh/line_key \
+              | sed -e "s/-----BEGIN RSA PRIVATE KEY-----/&${LF}/" -e "s/-----END RSA PRIVATE KEY-----/${LF}&${LF}/" \
+              | fold -w 64 > ~/.ssh/.priv_key
+
+            chmod 400 ~/.ssh/.priv_key
+            ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no \
+              -i ~/.ssh/.priv_key ubuntu@$EC2_IP < .circleci/deploy_ec2.sh
+      
