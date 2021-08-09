@@ -8,12 +8,22 @@ executors:
         environment:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
+  docker-in-docker:
+    docker:
+      - image: docker:18.06.1-ce
 
 workflows:
   run-tests:
     jobs:
       - test-ruby:
           name: ruby-unit-tests
+      - deploy-ruby:
+          name: deploy-aws
+          requires:
+            - ruby-unit-tests
+          filters:
+            branches:
+              only: master
 
 jobs:
   test-ruby:
@@ -31,3 +41,24 @@ jobs:
       - run:
           name: Run tests
           command: rspec --format documentation
+
+  deploy-ruby:
+    executor: docker-in-docker
+    steps:
+      - checkout
+      - setup_remote_docker:
+          docker_layer_caching: false
+      - run:
+          name: Build docker image
+          command: |
+            docker build . -t stevensim226/minisocial-be
+            echo $DOCKER_TOKEN | docker login -u $DOCKER_USERNAME --password-stdin
+            docker push stevensim226/steven-ruby:latest
+      - run:
+          name: Run shell script
+          command: |
+            pwd
+            ls
+            echo $SSH_KEY > ~/.ssh/.id_rsa
+            ssh -i ~/.ssh/.id_rsa ubuntu@$EC2_IP < .circleci/deploy_ec2.sh
+      

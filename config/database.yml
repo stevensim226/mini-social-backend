@@ -70,6 +70,8 @@ test:
 #
 production:
   <<: *default
+  host: <%= ENV['MINISOCIAL_DATABASE_HOST'] %>
+  port: 5432
   database: minisocial
   username: postgres
   password: <%= ENV['MINISOCIAL_DATABASE_PASSWORD'] %>
