@@ -8,4 +8,5 @@ WORKDIR rubyapp/
 ADD . .
 
 RUN bundle install
-RUN rails db:migrate
+
+CMD ["rails", "s", "-e", "production"]
