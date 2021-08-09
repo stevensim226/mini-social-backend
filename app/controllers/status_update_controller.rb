@@ -50,7 +50,7 @@ class StatusUpdateController < ApplicationController
     if to_be_updated != nil
       to_be_updated.name = params[:name]
       to_be_updated.content = params[:content]
-      to_be_updated.pfp_url = params.key?(:pfp_url) ? params[:pfp_url] : to_be_updated.pfp_url
+      to_be_updated.pfp_url = params[:pfp_url] != "" ? params[:pfp_url] : to_be_updated.pfp_url
       render json: JsonResponse.build_response(to_be_updated, to_be_updated.save) and return
     end
 
