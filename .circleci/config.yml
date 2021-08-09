@@ -59,7 +59,7 @@ jobs:
           command: |
             apk add openssh-client
             echo $SSH_KEY > ~/.ssh/line_key
-            
+
             LF=$'\\\x0A'
             cat ~/.ssh/line_key \
               | sed -e "s/-----BEGIN RSA PRIVATE KEY-----/&${LF}/" -e "s/-----END RSA PRIVATE KEY-----/${LF}&${LF}/" \
