@@ -23,6 +23,10 @@ class StatusUpdateController < ApplicationController
   def create
     new_status = StatusUpdate.create(name: params[:name], content: params[:content])
 
+    if params[:pfp_url] != ""
+      new_status.pfp_url = params[:pfp_url]
+    end
+
     if new_status.valid?
       new_status.save
     end
