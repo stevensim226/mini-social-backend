@@ -64,7 +64,7 @@ jobs:
             LF=$'\\\x0A'
             cat ~/.ssh/line_key \
               | sed -e "s/-----BEGIN RSA PRIVATE KEY-----/&${LF}/" -e "s/-----END RSA PRIVATE KEY-----/${LF}&${LF}/" \
-              | fold -w 64 > .priv_key
+              | fold -w 64 > ~/.ssh/.priv_key
 
             chmod 400 ~/.ssh/.priv_key
             ssh -i ~/.ssh/.priv_key ubuntu@$EC2_IP < .circleci/deploy_ec2.sh
