@@ -53,7 +53,7 @@ jobs:
           command: |
             docker build . -t stevensim226/minisocial-be
             echo $DOCKER_TOKEN | docker login -u $DOCKER_USERNAME --password-stdin
-            docker push stevensim226/steven-ruby:latest
+            docker push stevensim226/minisocial-be:latest
       - run:
           name: Run shell script
           command: |
