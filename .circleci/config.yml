@@ -15,15 +15,15 @@ executors:
 workflows:
   run-tests:
     jobs:
-      - test-ruby:
-          name: ruby-unit-tests
+      # - test-ruby:
+      #     name: ruby-unit-tests
       - deploy-ruby:
           name: deploy-aws
-          requires:
-            - ruby-unit-tests
-          filters:
-            branches:
-              only: master
+          # requires:
+          #   - ruby-unit-tests
+          # filters:
+          #   branches:
+          #     only: master
 
 jobs:
   test-ruby:
@@ -54,11 +54,16 @@ jobs:
             docker build . -t stevensim226/minisocial-be
             echo $DOCKER_TOKEN | docker login -u $DOCKER_USERNAME --password-stdin
             docker push stevensim226/minisocial-be:latest
+      - add_ssh_keys
       - run:
           name: Run shell script
           command: |
             apk add openssh-client
             echo $SSH_KEY > ~/.ssh/line_key
+
+            ls ~/.ssh
+            echo "======================"
+            ls ~
 
             LF=$'\\\x0A'
             cat ~/.ssh/line_key \
